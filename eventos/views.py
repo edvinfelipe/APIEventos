@@ -64,7 +64,6 @@ class EventoAPIView(APIView):
         jsonevento = convertir_datos_json(request.data)
 
         serializer = EventoSerializers(data=jsonevento)
-        print(jsonevento)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
