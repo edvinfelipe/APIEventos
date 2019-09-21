@@ -1,10 +1,11 @@
 from django.db import models
+from tipolocalidad.models import TipoLocalidad
+from eventos.models import Evento
 
-# Create your models here.
-class Localidad( models.Model ):
-    tipo = models.CharField(max_length=45)
-    costo = models.DecimalField(max_digits=8, decimal_places= 4)
+class Localidad( models.Model):
+    costo = models.DecimalField(max_digits=15, decimal_places= 4)
     cantidadAsientos = models.IntegerField()
-    canitidadAsientosDisponible = models.IntegerField()
-    cantidadAsientosOcupados = models.IntegerField()
-    
+    canitidadAsientosDisponible = models.IntegerField(blank=True)
+    cantidadAsientosOcupados = models.IntegerField(blank=True)
+    idEventos = models.ForeignKey(Evento, null=True, on_delete=models.CASCADE)
+    idTipoLocalidad = models.ForeignKey(TipoLocalidad, null=True, on_delete=models.CASCADE)
