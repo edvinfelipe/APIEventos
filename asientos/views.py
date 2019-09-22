@@ -49,9 +49,10 @@ class AsientoDetalles(APIView):
         return Response(status = status.HTTP_204_NO_CONTENT)
 
 class getId(APIView):
-    def getIde (self,request,pk):
+    def get(self,request,pk):
         try:
-            asiento = Asiento.objects.get(id=pk)
+            id_asiento = pk
+            asiento = Asiento.objects.get(id=id_asiento)
         except asiento.DoesNotExist:
             return Response({'Error': 'El id del asiento no existe (?)'})
 
