@@ -7,7 +7,7 @@ from asientos.serializers import AsientoSerializers
 
 class AsientoLista(APIView):
     """
-    List all asiento, or create new asiento
+    Lista todos los elementos de asiento, o crea un nuevo asiento
     """
     def get(self,request):
         asiento = Asiento.objects.all()
