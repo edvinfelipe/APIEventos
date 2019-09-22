@@ -9,11 +9,11 @@ class AsientoLista(APIView):
     """
     List all asiento, or create new asiento
     """
-    def get(self,request,format=None):
+    def get(self,request):
         asiento = Asiento.objects.all()
         serializer = AsientoSerializers(asiento)
         return Response(serializer.data)
-    def post(self,request,format=None):
+    def post(self,request):
         serializer = AsientoSerializers(data=request.DATA)
         if serializer.is_valid():
             serializer.save()
@@ -31,11 +31,11 @@ class AsientoDetalles(APIView):
             return Asiento.objects.get(pk=pk)
         except Asiento.DoesNotExist:
             raise Http404
-    def get(self,request,pk,format=None):
+    def get(self,request,pk):
         asiento = self.get_object(pk)
         serializer = AsientoSerializers(asiento)
         return Response (serializer.data)
-    def put(self,request,pk,format=None):
+    def put(self,request,pk):
         asiento = self.get_object(pk)
         serializer = AsientoSerializers(asiento,data=request.DATA)
         if serializer.is_valid():
@@ -43,7 +43,7 @@ class AsientoDetalles(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-    def delete(self,request,pk,format=None):
+    def delete(self,request,pk):
         asiento = self.get_object(pk)
         asiento.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
