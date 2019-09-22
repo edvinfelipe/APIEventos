@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'eventos',
     'localidades',
     'usuarios',
+    'asientos',
 ]
 
 MIDDLEWARE = [

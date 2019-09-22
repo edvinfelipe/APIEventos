@@ -11,7 +11,7 @@ class AsientoLista(APIView):
     """
     def get(self,request):
         asiento = Asiento.objects.all()
-        serializer = AsientoSerializers(asiento)
+        serializer = AsientoSerializers(asiento, many = True)
         return Response(serializer.data)
     def post(self,request):
         serializer = AsientoSerializers(data=request.data)

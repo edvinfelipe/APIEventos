@@ -6,3 +6,4 @@ class AsientoSerializers(serializers.ModelSerializer):
         model = Asiento 
         fields = ('numeroAsiento','disponible','idLocalidad','idEvento')
         #fields = '__all__'
+        #fields = ('idLocalidad','idEventos','numeroAsiento','disponible')
