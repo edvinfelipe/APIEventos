@@ -1,11 +1,10 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import TipoLocalidad
 from .serializers import TipoLocalidadSerializers
+import json
 
 
-# Create your views here.
 
 class TipoLocalidadAPIView(APIView):
 
@@ -16,7 +15,11 @@ class TipoLocalidadAPIView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors)
 
+
     def get(self, request):
-        localidad = TipoLocalidad.objects.all()
-        serializer = TipoLocalidadSerializers(localidad, many=True)
-        return Response(serializer.data)
+         try:
+             localidad = TipoLocalidad.objects.all()
+         except TipoLocalidad.DoesNotExist:
+             return Response({})
+         serializer = TipoLocalidadSerializers(localidad, many=True)
+         return Response(serializer.data)

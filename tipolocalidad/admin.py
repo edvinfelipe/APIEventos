@@ -1,3 +1,4 @@
 from django.contrib import admin
+from tipolocalidad.models import TipoLocalidad
 
-# Register your models here.
+admin.site.register(TipoLocalidad)
