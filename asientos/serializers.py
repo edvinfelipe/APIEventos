@@ -5,3 +5,4 @@ class AsientoSerializers(serializers.ModelSerializer):
     class Meta:
         model = Asiento 
         fields = ('numeroAsiento','disponible','idLocalidad','idEvento')
+        #fields = '__all__'
