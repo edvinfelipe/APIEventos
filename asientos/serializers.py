@@ -4,6 +4,6 @@ from asientos.models import Asiento
 class AsientoSerializers(serializers.ModelSerializer):
     class Meta:
         model = Asiento 
-        fields = ('numeroAsiento','disponible','idLocalidad','idEvento')
+        fields = ('id','numeroAsiento','disponible','idLocalidad','idEvento')
         #fields = '__all__'
         #fields = ('idLocalidad','idEventos','numeroAsiento','disponible')

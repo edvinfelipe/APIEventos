@@ -47,3 +47,13 @@ class AsientoDetalles(APIView):
         asiento = self.get_object(pk)
         asiento.delete()
         return Response(status = status.HTTP_204_NO_CONTENT)
+
+class getId(APIView):
+    def getIde (self,request,pk):
+        try:
+            asiento = Asiento.objects.get(id=pk)
+        except asiento.DoesNotExist:
+            return Response({'Error': 'El id del asiento no existe (?)'})
+
+        serializer = AsientoSerializers(asiento, many=False)
+        return Response(serializer.data)
