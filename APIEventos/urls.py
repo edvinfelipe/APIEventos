@@ -20,4 +20,6 @@ urlpatterns = [
     path('', include('eventos.urls')),
     path('',include('departamento.urls')),
     path('admin/', admin.site.urls),
+    path('', include('tipolocalidad.urls')),
+    path('', include('localidades.urls')),
 ]
