@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'departamento',
     'localidades',
     'tipolocalidad',
+    'asientos',
 ]
 
 MIDDLEWARE = [
