@@ -19,7 +19,7 @@ class LocalidadAPIView(APIView):
         codigo_evento = request.GET.get('codigoEventos')
         id_tipolocalidad = request.GET.get('idTipoLocalidad')
         try:
-            localidad = Localidad.objects.get(idEventos=codigo_evento, idTipoLocalidad=id_tipolocalidad)
+            localidad = Localidad.objects.get(codigoEventos=codigo_evento, idTipoLocalidad=id_tipolocalidad)
         except Localidad.DoesNotExist:
             return Response({'Error': 'El evento o el tipo de localidad no concuerda'})
 
