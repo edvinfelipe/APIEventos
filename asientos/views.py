@@ -10,9 +10,21 @@ class AsientoLista(APIView):
     Lista todos los elementos de asiento, o crea un nuevo asiento
     """
     def get(self,request):
-        asiento = Asiento.objects.all()
-        serializer = AsientoSerializers(asiento, many = True)
+        #asiento2 = Asiento.objects.all()
+        codigoLocalidad = request.GET.get('localidad')
+        try:
+            
+            asiento = Asiento.objects.filter(idLocalidad=codigoLocalidad)
+        except asiento.DoesNotExist:
+            return Response({'Error': 'El id de la localidad no existe (?)'})
+
+        serializer = AsientoSerializers(asiento, many=True)
         return Response(serializer.data)
+
+        #asiento = Asiento.objects.all()
+        #serializer = AsientoSerializers(asiento, many = True)
+        #return Response(serializer.data)
+
     def post(self,request):
         serializer = AsientoSerializers(data=request.data)
         if serializer.is_valid():

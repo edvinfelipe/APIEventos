@@ -8,4 +8,4 @@ class Asiento( models.Model ):
     numeroAsiento = models.CharField(max_length=6)
     disponible = models.BooleanField()
     idLocalidad = models.ForeignKey(Localidad, on_delete=models.CASCADE)
-    idEvento = models.ForeignKey(Evento, on_delete=models.CASCADE)
+    #idEvento = models.ForeignKey(Evento, on_delete=models.CASCADE)
