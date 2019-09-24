@@ -7,5 +7,5 @@ class Localidad( models.Model):
     cantidadAsientos = models.IntegerField()
     cantidadAsientosDisponible = models.IntegerField(blank=True)
     cantidadAsientosOcupados = models.IntegerField(blank=True)
-    codigoEventos = models.ForeignKey(Evento, null=True, on_delete=models.CASCADE)
+    codigoEventos = models.CharField(max_length=45, null=True)
     idTipoLocalidad = models.ForeignKey(TipoLocalidad, null=True, on_delete=models.CASCADE)
