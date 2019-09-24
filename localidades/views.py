@@ -16,10 +16,10 @@ class LocalidadAPIView(APIView):
         return Response(serializer.errors)
 
     def get(self, request):
-        id_evento = request.GET.get('idEventos')
+        codigo_evento = request.GET.get('codigoEventos')
         id_tipolocalidad = request.GET.get('idTipoLocalidad')
         try:
-            localidad = Localidad.objects.get(idEventos=id_evento, idTipoLocalidad=id_tipolocalidad)
+            localidad = Localidad.objects.get(idEventos=codigo_evento, idTipoLocalidad=id_tipolocalidad)
         except Localidad.DoesNotExist:
             return Response({'Error': 'El evento o el tipo de localidad no concuerda'})
 
