@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'eventos',
     'departamento',
+    'localidades',
+    'tipolocalidad',
+    'asientos',
 ]
 
 MIDDLEWARE = [
