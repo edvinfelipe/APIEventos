@@ -10,8 +10,8 @@ class UsuariosSerializers( serializers.ModelSerializer):
 
     def create(self, validated_data):
         usuario = Usuario(
-            correo=validated_data['correo'],
             nombre=validated_data['nombre'],
+            correo=validated_data['correo'],
             contrasena = make_password(validated_data['contrasena'])
         )
         return usuario
