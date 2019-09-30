@@ -9,7 +9,7 @@ class UsuariosSerializers( serializers.ModelSerializer):
         extra_kwargs = {'contrasena': {'write_only': True}}
 
     def create(self, validated_data):
-        usuario = Usuario(
+        usuario = Usuario.objects.create(
             nombre=validated_data['nombre'],
             correo=validated_data['correo'],
             contrasena = make_password(validated_data['contrasena'])
