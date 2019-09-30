@@ -119,3 +119,16 @@ class EventoAPIView(APIView):
             
             return Response({'mensaje':'Evento modificado con éxito'})
         return Response({'Error':'Fallo en la modificación'})
+    
+    def delete(self, request):
+        codigo_evento = request.GET.get('codigo')
+
+        if codigo_evento is None:
+            return Response({'Error':'No existe el evento'})
+        
+        try:
+            evento = Evento.objects.get(codigo=codigo_evento, eliminado = False)
+            evento.deleted()
+            return Response({'mensaje': 'El evento se eliminó con éxito'})
+        except:
+            return Response({'Error': 'Hubo error en la eliminación del evento'})

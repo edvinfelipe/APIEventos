@@ -18,6 +18,10 @@ class Evento( models.Model ):
     class Meta:
         # se ordena de acuerdo a su fecha el mas reciente se posiciona primero
         ordering = ['-fecha']
+    
+    def deleted(self):
+        self.eliminado = True
+        self.save()
 
 class Imagenes(models.Model):
     imagen = models.ImageField()
