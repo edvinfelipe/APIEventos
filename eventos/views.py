@@ -4,6 +4,7 @@ import random
 from .models import Evento, Imagenes
 from .serializers import EventoSerializers, EventoSerializerModificacion
 
+
 # Create your views here.
 
 def convertir_datos_json(data):

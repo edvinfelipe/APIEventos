@@ -1,8 +1,8 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Departamento
 from .serializers import DepartamentSerializers
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -19,4 +19,10 @@ class DepartamentAPIView(APIView):
         departamentos = Departamento.objects.all()
         serializer = DepartamentSerializers(departamentos, many= True)
         return Response(serializer.data)
+
+
+class Bienvenida(APIView):
+
+    def get(self, request):
+        return HttpResponse('<h1>Bienvenido</h1>')
 
