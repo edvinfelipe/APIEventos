@@ -3,13 +3,8 @@ from rest_framework.response import Response
 import random
 from .models import Evento
 from .serializers import EventoSerializers, EventoSerializerModificacion
-<<<<<<< HEAD
-
-
-# Create your views here.
-=======
 from imagenes import views
->>>>>>> felipe
+
 
 def convertir_datos_json(data):
     json = {}
@@ -89,11 +84,7 @@ class EventoAPIView(APIView):
             
             return Response({'mensaje':'Evento modificado con éxito'})
         return Response({'Error':'Fallo en la modificación'})
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> felipe
+        
     def delete(self, request):
         codigo_evento = request.GET.get('codigo')
 
@@ -101,17 +92,9 @@ class EventoAPIView(APIView):
             return Response({'Error':'No existe el evento'})
         
         try:
-<<<<<<< HEAD
-            evento = Evento.objects.get(codigo=codigo_evento, eliminado = False)
-            evento.deleted()
-            return Response({'mensaje': 'El evento se eliminó con éxito'})
-        except:
-            return Response({'Error': 'Hubo error en la eliminación del evento'})
-=======
             evento = Evento.objects.get(codigo=codigo_evento)
             evento.deleted()
             views.eliminar_imagenes_evento(codigo_evento)
             return Response({'mensaje':'Evento eliminado con éxito'})
         except Evento.DoesNotExist:
             return Response({'Error':'No existe el evento'})
->>>>>>> felipe

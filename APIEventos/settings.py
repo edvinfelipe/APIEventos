@@ -41,15 +41,12 @@ INSTALLED_APPS = [
     'corsheaders',
     'eventos',
     'departamento',
-<<<<<<< HEAD
     'localidades',
     'tipolocalidad',
     'asientos',
     'usuarios',
     'pagos',
-=======
     'imagenes',
->>>>>>> felipe
 ]
 
 MIDDLEWARE = [

@@ -22,20 +22,4 @@ class Evento( models.Model ):
     
     def deleted(self):
         self.eliminado = True
-<<<<<<< HEAD
         self.save()
-
-class Imagenes(models.Model):
-    imagen = models.ImageField()
-    id_evento = models.ForeignKey(Evento,on_delete=models.CASCADE, related_name='imagenes')
-
-"""
-class Comentario( models.Model ):
-    calificacion = models.IntegerField(default=0)
-    descripcion = models.TextField()
-    id_evento = models.ForeignKey(Evento, on_delete =models.CASCADE)
-    id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-"""
-=======
-        self.save()
->>>>>>> felipe
