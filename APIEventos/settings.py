@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'asientos',
     'usuarios',
     'pagos',
+    'imagenes',
 ]
 
 MIDDLEWARE = [

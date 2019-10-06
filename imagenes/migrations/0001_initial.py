@@ -12,10 +12,12 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Departamento',
+            name='Imagenes',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombre', models.CharField(max_length=25)),
+                ('imagen', models.ImageField(upload_to='')),
+                ('eliminado', models.BooleanField(default=False)),
+                ('codigoEvento', models.CharField(max_length=50)),
             ],
         ),
     ]
