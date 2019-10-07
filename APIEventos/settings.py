@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'usuarios',
     'pagos',
     'imagenes',
+    'comentarios',
 ]
 
 MIDDLEWARE = [
