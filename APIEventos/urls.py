@@ -20,5 +20,7 @@ urlpatterns = [
     path('', include('eventos.urls')),
     path('',include('departamento.urls')),
     path('',include('imagenes.urls')),
+    path('',include('comentarios.urls')),
+    path('',include('usuarios.urls')),
     path('admin/', admin.site.urls),
 ]
