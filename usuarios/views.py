@@ -14,6 +14,20 @@ class UsuariosAPIView(APIView):
         return Response(serializer.errors)
 
     def get(self, request):
-        usuarios = Usuario.objects.all()
-        serializer = UsuariosSerializers(usuarios, many= True)
-        return Response(serializer.data)
+        correo = request.GET.get('correo')
+        if (correo is None):
+            try:
+                usuarios = Usuario.objects.all()         
+            except Usuario.DoesNotExist:
+                return Response()
+            
+            serializer = UsuariosSerializers(usuarios, many= True)
+            return Response(serializer.data)
+        else:
+            try:
+                usuarios = Usuario.objects.get(correo=correo)
+            except Usuario.DoesNotExist:
+                return Response({'Error': 'El correo no existe'})
+
+            serializer = UsuariosSerializers(usuarios, many=False)
+            return Response(serializer.data)
