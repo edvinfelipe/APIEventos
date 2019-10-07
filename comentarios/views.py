@@ -25,7 +25,7 @@ class ComentarioAPIView(APIView):
         return Response(serializer.errors)
 
     def get(self, request):
-        codigo_evento = request.GET.get('pk')
+        codigo_evento = request.GET.get('codigo')
 
         if codigo_evento is None:
             return Response({'Error':'Parámetro incorrecto'})
