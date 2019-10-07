@@ -34,4 +34,15 @@ class Evento( models.Model ):
         self.sumcalificacion += calificacion
         self.calificacionP = self.sumcalificacion/self.contcomment
         self.save()
-        print("calificacion"+str(self.calificacionP))
+    
+    def decremented(self, calificacion):
+        self.contcomment -= 1
+        self.sumcalificacion -= calificacion
+
+        if self.contcomment != 0:
+            self.calificacionP = self.sumcalificacion/self.contcomment
+        else:
+            self.calificacionP = 0
+            
+        self.save()
+

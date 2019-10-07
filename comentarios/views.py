@@ -18,9 +18,11 @@ class ComentarioAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             
+            # Regresa el comentario con el nombre del usuario 
             evento.updated(int(serializer.data.get('calificacion')))
             coment1 = Comentario.objects.get(pk=serializer.data.get('id'))
             serializer1 = ComentarioUserSerializers(instance=coment1)
+
             return Response(serializer1.data)
         return Response(serializer.errors)
 
@@ -36,7 +38,7 @@ class ComentarioAPIView(APIView):
             return Response(serializer.data)
         except:
             return Response({'Error':'No hay comentarios al evento'})
-            #return Response({'Error':'No existe comentario de este evento'})  
+            
     
     def put(self, request):
         pk = request.GET.get('pk')
@@ -45,11 +47,14 @@ class ComentarioAPIView(APIView):
             return Response({'Error':'Parámetro incorrecto'})
         try:
             comentario = Comentario.objects.get(pk=pk)
+            
+            evento = Evento.objects.get(codigo=comentario.codigoEvento, eliminado=False)
+            evento.decremented(int(comentario.calificacion))
+
             serializer = ComentarioModificacionSerializers(comentario, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-
-                evento = Evento.objects.get(codigo=comentario.codigoEvento, eliminado=False)
+  
                 evento.updated(int(serializer.data.get('calificacion')))
 
                 return Response(serializer.data)
@@ -65,6 +70,10 @@ class ComentarioAPIView(APIView):
 
         try:
             comentario = Comentario.objects.get(pk=pk)
+
+            evento = Evento.objects.get(codigo=comentario.codigoEvento, eliminado=False)
+            evento.decremented(int(comentario.calificacion))
+
             comentario.delete()
             return Response({'mensaje':'El comentario se eliminó con éxito'})
         except:
