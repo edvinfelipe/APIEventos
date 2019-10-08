@@ -9,4 +9,9 @@ class LocalidadSerializers(serializers.ModelSerializer):
 class LocalidadModificacionSerializers(serializers.ModelSerializer):
     class Meta:
         model = Localidad
-        fields = ['costo','cantidadAsientos','cantidadAsientosDisponible','cantidadAsientosOcupados']
+        fields = ['costo','cantidadAsientos']
+
+class LocalidadModAsientoSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Localidad
+        fields = ['cantidadAsientosDisponible', 'cantidadAsientosOcupados']
