@@ -1,8 +1,8 @@
 from django.db import models
 from django.db import models
 from asientos.models import Asiento
-from usuarios.models import Usuario
-#from tipoPago.models import TipoPago
+from usuarios.models import Usuario 
+from pagos.models import Pago
 
 class DetalleEvento( models.Model):
     codigoEvento = models.CharField(max_length=45)
@@ -10,5 +10,5 @@ class DetalleEvento( models.Model):
     reserva = models.BooleanField()
     idUsuario = models.ForeignKey(Usuario,on_delete=models.CASCADE)
     idAsiento = models.ForeignKey(Asiento, on_delete=models.CASCADE)
-    #idTipoPago = models.ForeignKey(TipoPago, on_delete=models.CASCADE)
+    idTipoPago = models.ForeignKey(Pago, on_delete=models.CASCADE)
 

@@ -5,4 +5,4 @@ class DetalleEventoSerializers(serializers.ModelSerializer):
     class Meta:
         model = DetalleEvento 
         fields = '__all__'
-        #fields = ('id','codigoEvento','pago','reserva','idUsuario','idAsiento')
+        #fields = ('id','codigoEvento','pago','reserva','idUsuario','idAsiento','idPago')
