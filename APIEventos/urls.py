@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('eventos.urls')),
+    path('', include('evento_prueba.urls')),
     path('',include('departamento.urls')),
     path('', include('tipolocalidad.urls')),
     path('', include('localidades.urls')),
