@@ -2,6 +2,16 @@ from rest_framework import serializers
 from .models import Evento
 
 
+class EventoDepartamentSerializers( serializers.ModelSerializer ):
+    idDepartamento = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field='nombre'
+     )
+    class Meta:
+        model = Evento
+        fields  = ['codigo','titulo','descripcion','direccion','fecha','hora','disponible','rutaLugar','calificacionP','idDepartamento']
+
 class EventoSerializers( serializers.ModelSerializer ):
     class Meta:
         model = Evento
