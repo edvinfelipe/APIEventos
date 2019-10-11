@@ -28,6 +28,7 @@ urlpatterns = [
     path('',include('imagenes.urls')),
     path('',include('comentarios.urls')),
     path('',include('usuarios.urls')),
+    path('',include('detalleevento.urls')),
     path('admin/', admin.site.urls),
   
 ]
