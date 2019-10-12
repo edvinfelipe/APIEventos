@@ -1,16 +1,15 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import random
-import datetime
-from .models import Evento
-from .serializers import EventoSerializers, EventoSerializerModificacion, EventoDepartamentSerializers
-from imagenes import views as views_imagen
-from comentarios import views as views_comentario
+from .models import Evento, Imagenes
+from .serializers import EventoSerializers, EventoSerializerModificacion
 
+# Create your views here.
 
 def convertir_datos_json(data):
     json = {}
-    codigo = data.get('codigo') 
+    codigo = data.get('codigo')
+    imagenes = data.getlist('imagenes') 
     
     if codigo is None:
         caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'
@@ -22,16 +21,40 @@ def convertir_datos_json(data):
         
         json['codigo'] = codigo
     
+    if imagenes is None:
+        json['imagenes'] = []
+    elif len(imagenes) is 1:
+        json['imagenes'] = [{'imagen':imagenes[0]}]
+    else:
+        tempImagenes = []
+        for imagen in imagenes:
+            tempImagenes.append({'imagen':imagen})
+        
+        json['imagenes'] = tempImagenes
 
     json['titulo']      =    data.get('titulo')
     json['descripcion'] =    data.get('descripcion')
     json['direccion']   =    data.get('direccion')
     json['fecha']       =    data.get('fecha')
-    json['hora']        =    data.get('hora') 
     json['disponible']  =    data.get('disponible')
-    json['rutaLugar']   =    data.get('rutaLugar')
+    json['rutaLugar']   =     data.get('rutaLugar')
     json['idDepartamento'] = data.get('idDepartamento')
 
+    return json
+
+def convertir_datos_modificar_json(data, json):
+    
+    imagenes_borrar = data.getlist('imagenes_borrar')
+    
+    if imagenes_borrar is None:
+        json['imagenes_borrar'] = []
+    elif len(imagenes_borrar) is 1:
+        json['imagenes_borrar'] = [{'pk':imagenes_borrar[0]}]
+    else:
+        tempImBorrar = []
+        for id in imagenes_borrar:
+            tempImBorrar.append({'pk':id})
+        json['imagenes_borrar'] = tempImBorrar
     return json
 
 class EventoAPIView(APIView):
@@ -43,9 +66,7 @@ class EventoAPIView(APIView):
         serializer = EventoSerializers(data=jsonevento)
         if serializer.is_valid():
             serializer.save()
-            event1 = Evento.objects.get(codigo=serializer.data.get('codigo'))
-            serializer1 = EventoDepartamentSerializers(instance=event1)
-            return Response(serializer1.data)
+            return Response(serializer.data)
         
         return Response(serializer.errors)
     
@@ -58,7 +79,7 @@ class EventoAPIView(APIView):
             except Evento.DoesNotExist:
                 return Response({})
             
-            serializer = EventoDepartamentSerializers(eventos, many = True) 
+            serializer = EventoSerializers(eventos, many = True) 
             return Response(serializer.data)
         
         else:
@@ -67,7 +88,7 @@ class EventoAPIView(APIView):
             except Evento.DoesNotExist:
                 return Response({'Error':'No existe el evento con el codigo enviado'})
             
-            serializer = EventoDepartamentSerializers(evento, many=False)
+            serializer = EventoSerializers(evento, many=False)
             return Response(serializer.data)
     
     def put(self,request):
@@ -77,43 +98,24 @@ class EventoAPIView(APIView):
             return Response({'Error':'No existe el evento'})
         
         try:
-            evento = Evento.objects.get(codigo=codigo_evento, eliminado=False)
+            evento = Evento.objects.get(codigo=codigo_evento)
         except Evento.DoesNotExist:
             return Response({'Error':'No existe el evento'})
 
-        serializer = EventoSerializerModificacion(evento, data= request.data)
+        jsonevento = convertir_datos_json(request.data)                         # Retorno solo el json del evento.                    
+        tempjson = convertir_datos_modificar_json(request.data,jsonevento)      # Retorna el json con imagenes a agregar y borrar
+        list_img_borrar = tempjson.pop('imagenes_borrar')
+        serializer = EventoSerializerModificacion(evento, data= jsonevento)
 
-        if serializer.is_valid():            
+        if serializer.is_valid():
+
+            for id in list_img_borrar:
+                try:
+                    Imagenes.objects.filter(pk=id['pk']).delete()
+                except Imagenes.DoesNotExist:
+                    return Response({'Error': 'Hubo error al eliminar la imagene, verifica el id'})
+            
             serializer.save()
             
             return Response({'mensaje':'Evento modificado con éxito'})
         return Response({'Error':'Fallo en la modificación'})
-        
-    def delete(self, request):
-        codigo_evento = request.GET.get('codigo')
-
-        if codigo_evento is None:
-            return Response({'Error':'No existe el evento'})
-        
-        try:
-            evento = Evento.objects.get(codigo=codigo_evento)
-            evento.deleted()
-            views_imagen.eliminar_imagenes_evento(codigo_evento)
-            views_comentario.eliminar_comentarios_evento(codigo_evento)
-            return Response({'mensaje':'Evento eliminado con éxito'})
-        except Evento.DoesNotExist:
-            return Response({'Error':'No existe el evento'})
-
-class EventoFilterFecha(APIView):
-
-    def get(self, request):
-        
-        date = datetime.datetime.now().date()
-        
-        try:
-            eventos = Evento.objects.filter(eliminado=False,fecha__gte=date)
-        except Evento.DoesNotExist:
-            return Response({'Error':'Hubo error en la obtención de los eventos'})
-            
-        serializer = EventoDepartamentSerializers(eventos, many = True) 
-        return Response(serializer.data)        
