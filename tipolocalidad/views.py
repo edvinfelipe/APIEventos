@@ -32,11 +32,11 @@ class TipoLocalidadAPIView(APIView):
             try:
                 tipoLocalidad = TipoLocalidad.objects.get(id=id_tipoLocalidad)
             except TipoLocalidad.DoesNotExist:
-                return Response({'Error': 'No existe la localidad'})
+                return Response({'Error': 'No existe el tipo de localidad'})
 
             serializer = TipoLocalidadModificacionSerializers(tipoLocalidad, data=request.data)
 
             if serializer.is_valid():
                 serializer.save()
-                return Response({'Mensaje': 'Localidad modificada con éxito'})
+                return Response({'Mensaje': 'Tipo de localidad modificada con éxito'})
             return Response({'Error': 'Falló la modificación'})
