@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'comentarios',
     'evento_prueba',
     'detalleevento',
+    'pagosevento',
 ]
 
 MIDDLEWARE = [
