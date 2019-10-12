@@ -28,5 +28,5 @@ class PagosEventoAPIView(APIView):
             except PagosEvento.DoesNotExist:
                 return Response({'Error': 'El evento no coincide'})
 
-            serializer = PagosEventoSerializers(pagosEvento, many=False)
+            serializer = PagosEventoSerializers(pagosEvento, many=True)
             return Response(serializer.data)
