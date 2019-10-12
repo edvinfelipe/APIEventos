@@ -21,6 +21,7 @@ class DepartamentAPIView(APIView):
         return Response(serializer.data)
 
 
+
 class Bienvenida(APIView):
 
     def get(self, request):
