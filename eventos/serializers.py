@@ -35,5 +35,3 @@ class EventoSerializerModificacion( serializers.ModelSerializer):
         instance.idDepartamento = validated_data.get('idDepartamento', instance.idDepartamento)
         instance.save()
         return instance
-
-

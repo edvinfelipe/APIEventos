@@ -116,8 +116,4 @@ class EventoFilterFecha(APIView):
             return Response({'Error':'Hubo error en la obtención de los eventos'})
             
         serializer = EventoDepartamentSerializers(eventos, many = True) 
-        return Response(serializer.data)
-        
-        
-        
-
+        return Response(serializer.data)        

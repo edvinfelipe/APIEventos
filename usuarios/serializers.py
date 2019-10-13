@@ -6,12 +6,13 @@ class UsuariosSerializers( serializers.ModelSerializer):
     class Meta:
         model = Usuario
         fields = '__all__'
-        extra_kwargs = {'contrasena': {'write_only': True}}
 
-    def create(self, validated_data):
-        usuario = Usuario.objects.create(
-            nombre=validated_data['nombre'],
-            correo=validated_data['correo'],
-            contrasena = make_password(validated_data['contrasena'])
-        )
-        return usuario
+class UsuariosModificacionSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = ['nombre']
+    
+    def update(self, instance, validated_data):
+        instance.nombre = validated_data.get('nombre', instance.nombre)
+        instance.save()
+        return instance

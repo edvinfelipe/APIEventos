@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Localidad
@@ -61,7 +60,7 @@ class LocalidadAPIView(APIView):
         codigo_evento = request.GET.get('codigoEventos')
         if(id_localidad is None):
             return Response()
-        elif(id_localidad is not None) and (codigo_evento is None):
+        elif(id_localidad    is not None) and (codigo_evento is None):
             try:
                 localidad = Localidad.objects.get(id=id_localidad)
             except Localidad.DoesNotExist:
