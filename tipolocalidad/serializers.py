@@ -5,3 +5,7 @@ class TipoLocalidadSerializers(serializers.ModelSerializer):
     class Meta:
         model = TipoLocalidad
         fields = '__all__'
+class TipoLocalidadModificacionSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = TipoLocalidad
+        fields = ['tipoLocalidad']
