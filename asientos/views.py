@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import Http404
 from asientos.models import Asiento
-from asientos.serializers import AsientoSerializers
+from asientos.serializers import AsientoSerializers, ModificacionAsientoSerializer, ModificacionDisponibleSerializer
 
 class AsientoLista(APIView):
     """
@@ -28,8 +28,11 @@ class AsientoLista(APIView):
         elif((codigoLocalidad is None) and (codigoAsiento != '')):    
             try:
                 asiento = Asiento.objects.get(id = codigoAsiento)
+                if asiento.disponible == False:
+                    serializer = ModificacionDisponibleSerializer(asiento,many=False)
+                    return Response(serializer.data)
             except Asiento.DoesNotExist:
-                return Respones({'Error': 'El id de la localidad no existe (?)'})
+                return Response({'Error': 'El id de la localidad no existe (?)'})
                 
             serializer = AsientoSerializers(asiento, many=False)
             return Response(serializer.data)
@@ -49,20 +52,25 @@ class AsientoLista(APIView):
 
     def put(self,request):
         codigoAsiento = request.GET.get('idAsiento')
+        try:
+            asiento = Asiento.objects.get(id=codigoAsiento)
+        except asiento.DoesNotExist:
+            return Response({'Error': 'El id del asiento no existe (?)'})
+            #asiento = self.get_object(pk)
         if codigoAsiento is None:
             return Response({'Error':'No existe el asiento'})
         else:
-            try:
-                asiento = Asiento.objects.get(id=codigoAsiento)
-            except asiento.DoesNotExist:
-                return Response({'Error': 'El id del asiento no existe (?)'})
-            #asiento = self.get_object(pk)
-            serializer = AsientoSerializers(asiento,data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
+            if asiento.disponible == False:
+                return Response({'Error' : 'Este asiento no se encuentra disponible'})
             else:
-                return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+                asiento.disponible = False
+                serializer = ModificacionAsientoSerializer(asiento,data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+                
 
 
 
