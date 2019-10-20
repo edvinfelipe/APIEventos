@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import Http404
 from asientos.models import Asiento
-from asientos.serializers import AsientoSerializers, ModificacionAsientoSerializer
+from asientos.serializers import AsientoSerializers, ModificacionAsientoSerializer, ModificacionDisponibleSerializer
 
 class AsientoLista(APIView):
     """
@@ -29,9 +29,10 @@ class AsientoLista(APIView):
             try:
                 asiento = Asiento.objects.get(id = codigoAsiento)
                 if asiento.disponible == False:
-                    return Response({'Error' : 'Este asiento no se encuentra disponible'})
+                    serializer = ModificacionDisponibleSerializer(asiento,many=False)
+                    return Response(serializer.data)
             except Asiento.DoesNotExist:
-                return Respones({'Error': 'El id de la localidad no existe (?)'})
+                return Response({'Error': 'El id de la localidad no existe (?)'})
                 
             serializer = AsientoSerializers(asiento, many=False)
             return Response(serializer.data)
