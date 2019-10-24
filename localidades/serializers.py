@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Localidad
 
+
 class LocalidadSerializers(serializers.ModelSerializer):
     class Meta:
         model = Localidad
@@ -15,3 +16,8 @@ class LocalidadModAsientoSerializers(serializers.ModelSerializer):
     class Meta:
         model = Localidad
         fields = ['cantidadAsientosDisponible', 'cantidadAsientosOcupados']
+
+class CodigoEventosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Localidad
+        fields = ('codigoEventos',)

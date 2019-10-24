@@ -3,8 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import Http404
 from asientos.models import *
-from asientos.serializers import *
-from localidades.serializers import LocalidadSerializers
+from asientos.serializers import AsientoSerializers, AsientosLocalidadesSerializer
 
 class AsientoLista(APIView):
     """
@@ -15,18 +14,32 @@ class AsientoLista(APIView):
         codigoLocalidad = request.GET.get('idLocalidad')
         codigoAsiento = request.GET.get('idAsiento')
         codigoEvento = request.GET.get('codigoEvento')
+
         if (codigoLocalidad is None) and (codigoAsiento is None):
             asiento = Asiento.objects.all()
             serializer = AsientoSerializers(asiento, many = True)
             return Response(serializer.data)
+
         elif((codigoLocalidad != '') and (codigoAsiento is None)):
             try:
                 asiento = Asiento.objects.filter(idLocalidad=codigoLocalidad)
             except asiento.DoesNotExist:
                 return Response({'Error': 'El id de la localidad no existe (?)'})
-
             serializer = AsientoSerializers(asiento, many=True)
             return Response(serializer.data)
+
+        elif((codigoLocalidad is None) and (codigoAsiento != '')):    
+            try:
+                asiento = Asiento.objects.get(id = codigoAsiento)
+                if asiento.disponible == False:
+                    serializer = ModificacionDisponibleSerializer(asiento,many=False)
+                    return Response(serializer.data)
+            except Asiento.DoesNotExist:
+                return Response({'Error': 'El id de la localidad no existe (?)'})
+                
+            serializer = AsientoSerializers(asiento, many=False)
+            return Response(serializer.data)
+    
         elif((codigoEvento != '')and(codigoLocalidad != '')):
             try:   
                 asiento = AsientoconCodigoEvento.objects.filter(idLocalidad=codigoLocalidad,codigoAsiento=codigoAsiento)
@@ -69,19 +82,19 @@ class AsientoLista(APIView):
                     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
                 
 
-class InnerJoin(APIView):
-    queryset = Asiento.objects.filter(idLocalidad=1).select_related('idLocalidad')#.prefetch_related(Prefetch('id','codigoEventos')
-    print(str(queryset.query))
-    serializer_class = AsientoSerializers
+class CodigoEventos(APIView):
+    #queryset = Asiento.objects.filter(idLocalidad=1).select_related('idLocalidad')#.prefetch_related(Prefetch('id','codigoEventos')
+    #print(str(queryset.query))
+    #serializer_class = AsientoSerializers
     def get(self,request):
-        #asiento = Asiento.objects.select_related("idLocalidad")
-        #print (str(asiento.query))
-        #obj = get_object_or_404(queryset)
         codigoLocalidad = request.GET.get('idLocalidad')
-        asiento = Asiento.objects.filter(idLocalidad=2).select_related('idLocalidad')
-       # print (str(asiento.query))
-        serializer = AsientosLocalidadesSerializer(asiento, many = True)
-        return Response(serializer.data)
+        if (codigoLocalidad is None):
+            return Response({'Error': 'No se realizo ninguna búsqueda'})
+        else:
+            asiento = Asiento.objects.filter(idLocalidad=codigoLocalidad).select_related('idLocalidad')
+            #print (str(asiento.query))
+            serializer = AsientosLocalidadesSerializer(asiento, many = True)
+            return Response(serializer.data)
 
 
 
