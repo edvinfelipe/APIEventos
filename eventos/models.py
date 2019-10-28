@@ -19,7 +19,7 @@ class Evento( models.Model ):
 
     class Meta:
         # se ordena de acuerdo a su fecha el mas reciente se posiciona primero
-        ordering = ['-fecha']
+        ordering = ['fecha']
     
     def deleted(self):
         self.eliminado = True

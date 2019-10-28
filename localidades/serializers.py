@@ -15,3 +15,8 @@ class LocalidadModAsientoSerializers(serializers.ModelSerializer):
     class Meta:
         model = Localidad
         fields = ['cantidadAsientosDisponible', 'cantidadAsientosOcupados']
+
+class CodigoEventosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Localidad
+        fields = ('codigoEventos',)
