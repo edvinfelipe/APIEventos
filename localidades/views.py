@@ -11,12 +11,14 @@ from asientos.models import Asiento
 class LocalidadAPIView(APIView):
 
     def post(self, request):
-
-        serializer = LocalidadSerializers(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors)
+        if(Localidad.objects.filter(idTipoLocalidad=request.data['idTipoLocalidad'], codigoEventos=request.data['codigoEventos']).exists()):
+            return Response({'Error': 'La localidad ya ha sido creada'})
+        else:
+            serializer = LocalidadSerializers(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors)
 
     def get(self, request):
         codigo_evento = request.GET.get('codigoEventos')
