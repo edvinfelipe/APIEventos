@@ -10,7 +10,7 @@ class ComentarioUserSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Comentario
-        fields = ['id','descripcion','calificacion','codigoEvento','idUsuario']
+        fields = ['id','descripcion','calificacion','fecha','codigoEvento','idUsuario']
 
 class ComentarioSerializers(serializers.ModelSerializer):
     class Meta:
