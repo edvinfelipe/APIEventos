@@ -1,5 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import generics
+from .pagination import ViewPagination
 import random
 import datetime
 from .models import Evento
@@ -117,3 +119,8 @@ class EventoFilterFecha(APIView):
             
         serializer = EventoDepartamentSerializers(eventos, many = True) 
         return Response(serializer.data)        
+
+class List_evento(generics.ListAPIView):
+    queryset = Evento.objects.filter(eliminado=False)
+    serializer_class = EventoDepartamentSerializers
+    pagination_class = ViewPagination
