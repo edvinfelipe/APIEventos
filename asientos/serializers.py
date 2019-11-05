@@ -18,7 +18,7 @@ class ModificacionAsientoSerializer(serializers.ModelSerializer):
 class ModificacionDisponibleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Asiento
-        fields = ('disponible',)
+        fields = ('id','disponible',)
 
 class AsientosLocalidadesSerializer(serializers.ModelSerializer):
     #codigoEventos = LocalidadSerializers
