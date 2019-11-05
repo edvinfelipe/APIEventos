@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import Http404
 from asientos.models import *
-from asientos.serializers import AsientoSerializers, AsientosLocalidadesSerializer
+from asientos.serializers import AsientoSerializers, AsientosLocalidadesSerializer, ModificacionDisponibleSerializer, ModificacionAsientoSerializer
 
 class AsientoLista(APIView):
     """
