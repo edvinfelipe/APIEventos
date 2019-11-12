@@ -36,6 +36,22 @@ class AsientoLista(APIView):
         elif((codigoLocalidad is None) and (codigoAsiento != '')):    
             try:
                 asiento = Asiento.objects.get(id = codigoAsiento)
+                """if asiento.disponible == False:
+                    asiento.disponible = True
+                    serializer = ModificacionDisponibleSerializer(asiento,data=Asiento)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response(serializer.data)
+                    else:
+                        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    asiento.disponible = False
+                    serializer = ModificacionDisponibleSerializer(asiento,data=Asiento)
+                    if serializer.is_valid():
+                        serializer.save()
+                        return Response(serializer.data)
+                    else:
+                        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)"""
                 if asiento.disponible == False:
                     serializer = ModificacionDisponibleSerializer(asiento,many=False)
                     return Response(serializer.data)
@@ -75,11 +91,17 @@ class AsientoLista(APIView):
         if codigoAsiento is None:
             return Response({'Error':'No existe el asiento'})
         else:
-            if asiento.disponible == False:
-                return Response({'Error' : 'Este asiento no se encuentra disponible'})
+            if (asiento.disponible == False):
+                asiento.disponible = True
+                serializer = ModificacionDisponibleSerializer(asiento,data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
             else:
                 asiento.disponible = False
-                serializer = ModificacionAsientoSerializer(asiento,data=request.data)
+                serializer = ModificacionDisponibleSerializer(asiento,data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data)
