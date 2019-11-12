@@ -1,5 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import generics
+from .pagination import ViewPagination
 import random
 import datetime
 from .models import Evento
@@ -104,16 +106,13 @@ class EventoAPIView(APIView):
         except Evento.DoesNotExist:
             return Response({'Error':'No existe el evento'})
 
-class EventoFilterFecha(APIView):
+class EventoFilterFecha(generics.ListAPIView):
+    date = datetime.datetime.now().date()
+    queryset = Evento.objects.filter(eliminado=False,fecha__gte=date)
+    serializer_class = EventoDepartamentSerializers
+    pagination_class = ViewPagination       
 
-    def get(self, request):
-        
-        date = datetime.datetime.now().date()
-        
-        try:
-            eventos = Evento.objects.filter(eliminado=False,fecha__gte=date)
-        except Evento.DoesNotExist:
-            return Response({'Error':'Hubo error en la obtención de los eventos'})
-            
-        serializer = EventoDepartamentSerializers(eventos, many = True) 
-        return Response(serializer.data)        
+class List_evento(generics.ListAPIView):
+    queryset = Evento.objects.filter(eliminado=False)
+    serializer_class = EventoDepartamentSerializers
+    pagination_class = ViewPagination
