@@ -1,8 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import generics
+from .pagination import ViewPagination
 import random
+import datetime
 from .models import Evento
-from .serializers import EventoSerializers, EventoSerializerModificacion
+from .serializers import EventoSerializers, EventoSerializerModificacion, EventoDepartamentSerializers
 from imagenes import views as views_imagen
 from comentarios import views as views_comentario
 
@@ -42,7 +45,9 @@ class EventoAPIView(APIView):
         serializer = EventoSerializers(data=jsonevento)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            event1 = Evento.objects.get(codigo=serializer.data.get('codigo'))
+            serializer1 = EventoDepartamentSerializers(instance=event1)
+            return Response(serializer1.data)
         
         return Response(serializer.errors)
     
@@ -55,7 +60,7 @@ class EventoAPIView(APIView):
             except Evento.DoesNotExist:
                 return Response({})
             
-            serializer = EventoSerializers(eventos, many = True) 
+            serializer = EventoDepartamentSerializers(eventos, many = True) 
             return Response(serializer.data)
         
         else:
@@ -64,7 +69,7 @@ class EventoAPIView(APIView):
             except Evento.DoesNotExist:
                 return Response({'Error':'No existe el evento con el codigo enviado'})
             
-            serializer = EventoSerializers(evento, many=False)
+            serializer = EventoDepartamentSerializers(evento, many=False)
             return Response(serializer.data)
     
     def put(self,request):
@@ -100,3 +105,14 @@ class EventoAPIView(APIView):
             return Response({'mensaje':'Evento eliminado con éxito'})
         except Evento.DoesNotExist:
             return Response({'Error':'No existe el evento'})
+
+class EventoFilterFecha(generics.ListAPIView):
+    date = datetime.datetime.now().date()
+    queryset = Evento.objects.filter(eliminado=False,fecha__gte=date)
+    serializer_class = EventoDepartamentSerializers
+    pagination_class = ViewPagination       
+
+class List_evento(generics.ListAPIView):
+    queryset = Evento.objects.filter(eliminado=False)
+    serializer_class = EventoDepartamentSerializers
+    pagination_class = ViewPagination

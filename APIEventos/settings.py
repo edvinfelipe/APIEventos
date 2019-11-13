@@ -47,7 +47,11 @@ INSTALLED_APPS = [
     'usuarios',
     'pagos',
     'imagenes',
+    'imagenusuario',
     'comentarios',
+    'evento_prueba',
+    'detalleevento',
+    'pagosevento',
 ]
 
 MIDDLEWARE = [
@@ -121,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Guatemala'
 
 USE_I18N = True
 
