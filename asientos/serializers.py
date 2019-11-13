@@ -29,4 +29,4 @@ class AsientosLocalidadesSerializer(serializers.ModelSerializer):
         fields = ('id','numeroAsiento','disponible','idLocalidad','codigoEventos')
         #model = Localidad
         #fields = ('id','codigoEventos','costo')
-        #PABLO NO SABE SUBIR CAMBIOS A GIT HUB
+        #PABLO
