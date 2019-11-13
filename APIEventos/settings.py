@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'usuarios',
     'pagos',
     'imagenes',
-    'imagenusuario',
     'comentarios',
     'evento_prueba',
     'detalleevento',

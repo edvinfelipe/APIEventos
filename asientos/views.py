@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.http import Http404
 from asientos.models import *
-from asientos.serializers import AsientoSerializers, AsientosLocalidadesSerializer
+from asientos.serializers import AsientoSerializers, AsientosLocalidadesSerializer, ModificacionDisponibleSerializer, ModificacionAsientoSerializer
+from asientos.pagination import ViewPagination1
 
 class AsientoLista(APIView):
     """
@@ -23,10 +24,14 @@ class AsientoLista(APIView):
         elif((codigoLocalidad != '') and (codigoAsiento is None)):
             try:
                 asiento = Asiento.objects.filter(idLocalidad=codigoLocalidad)
+                pagination = ViewPagination1()
+                result_page = pagination.paginate_queryset(asiento,request)
             except asiento.DoesNotExist:
                 return Response({'Error': 'El id de la localidad no existe (?)'})
-            serializer = AsientoSerializers(asiento, many=True)
-            return Response(serializer.data)
+            #serializer = AsientoSerializers(asiento, many=True)
+            serializer = AsientoSerializers(result_page, many=True)
+            #return Response(serializer.data)
+            return pagination.get_paginated_response(serializer.data)
 
         elif((codigoLocalidad is None) and (codigoAsiento != '')):    
             try:
