@@ -57,7 +57,7 @@ class AsientoLista(APIView):
         #return Response(serializer.data)
 
     def post(self,request):
-        
+        #No hace nada
         serializer = AsientoSerializers(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -75,11 +75,17 @@ class AsientoLista(APIView):
         if codigoAsiento is None:
             return Response({'Error':'No existe el asiento'})
         else:
-            if asiento.disponible == False:
-                return Response({'Error' : 'Este asiento no se encuentra disponible'})
+            if (asiento.disponible == False):
+                asiento.disponible = True
+                serializer = ModificacionDisponibleSerializer(asiento,data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                else:
+                    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
             else:
                 asiento.disponible = False
-                serializer = ModificacionAsientoSerializer(asiento,data=request.data)
+                serializer = ModificacionDisponibleSerializer(asiento,data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data)
