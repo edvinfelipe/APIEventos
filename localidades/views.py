@@ -59,10 +59,10 @@ class LocalidadAPIView(APIView):
         if not request.GET._mutable:
             request.GET._mutable = True
         id_localidad = request.GET.get('id')
-        codigo_evento = request.GET.get('codigoEventos')
+        asientos = request.GET.get('asientos')
         if(id_localidad is None):
             return Response()
-        elif(id_localidad    is not None) and (codigo_evento is None):
+        elif(id_localidad is not None) and (asientos is None):
             try:
                 localidad = Localidad.objects.get(id=id_localidad)
             except Localidad.DoesNotExist:
@@ -74,10 +74,10 @@ class LocalidadAPIView(APIView):
                 serializer.save()
                 return Response({'Mensaje': 'Localidad modificada con éxito'})
             return Response({'Error': 'Falló la modificación'})
-        elif(id_localidad is not None) and (codigo_evento is not None):
+        elif(id_localidad is not None) and (asientos is not None):
             try:
-                total_disponibles = Asiento.objects.filter(idEvento=codigo_evento, idLocalidad=id_localidad, disponible=1).count()
-                total_ocupados = Asiento.objects.filter(idEvento=codigo_evento, idLocalidad=id_localidad, disponible=0).count()
+                total_disponibles = Asiento.objects.filter(idLocalidad=id_localidad, disponible=1).count()
+                total_ocupados = Asiento.objects.filter(idLocalidad=id_localidad, disponible=0).count()
                 localidad = Localidad.objects.get(id=id_localidad)
             except Localidad.DoesNotExist:
                 return Response({'Error':'No existe la localidad'})
