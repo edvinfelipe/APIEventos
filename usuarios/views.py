@@ -13,9 +13,7 @@ class UsuariosAPIView(APIView):
             serializer = UsuariosSerializers(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-
-            return Response(serializer.data)    
-
+                return Response(serializer.data)    
         return Response(serializer.errors)
         
 
@@ -45,8 +43,8 @@ class UsuariosAPIView(APIView):
             serializer = UsuariosModificacionSerializers(usuario, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-
-            return Response(serializer.data)
+                return Response(serializer.data)
+            return Response(serializer.errors)
         except Usuario.DoesNotExist:
             return Response({'Error': 'El correo ingresado no existe'})
         

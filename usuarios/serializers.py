@@ -10,9 +10,10 @@ class UsuariosSerializers( serializers.ModelSerializer):
 class UsuariosModificacionSerializers(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['nombre']
+        fields = ['nombre', 'rutaImagen']
     
     def update(self, instance, validated_data):
         instance.nombre = validated_data.get('nombre', instance.nombre)
+        instance.rutaImagen = validated_data.get('rutaImagen', instance.rutaImagen)
         instance.save()
         return instance
